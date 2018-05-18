@@ -1,7 +1,11 @@
 from flask import Flask,render_template,flash,request,redirect,url_for,session,logging
 from wtforms import Form,StringField,TextAreaField,PasswordField,validators
-from passlib.hash import sha256_crypt
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 import redis
+
+login_manger=LoginManager()
+bcrypt=Bcrypt()
 
 
 
@@ -65,46 +69,45 @@ def login():
     
     
     if request.method == 'POST':
-        # Get Form Fields
+
+         # Get Form Fields
         username = request.form['username']
         password_candidate = request.form['password']
+        hashed_password=bcrypt.generate_password_hash(password_candidate)
 
 
-        
-        
-        
-        # connection
-        R = redis.StrictRedis( host='localhost', port=6379, password='1916')
-        print 'set_username',R.set("username","shyamsr")
-        print 'username:', R.get("username")
-        print 'set_password',R.set("password","123456")
-        print 'password:', R.get("password")
 
+         #connection
         
-       
-                       
+        R = redis.StrictRedis(host='localhost',port=6379,db=0)
+            
+        result=R.get("username")
+
+            
+        
+        password=R.get("password")
+        
+        
     
              
-                     
-    
-            
 
+       
 
-
-        if  R.StringField > 0:
+        
+        if  result==username:
             
             
         
-            password = data['password']
+            
 
-            # Compare Passwords
-            if sha256_crypt.verify(password_candidate, password):
+            #Compare Passwords
+            if bcrypt.check_password_hash(hashed_password,password):
                 # Passed
                 session['logged_in'] = True
                 session['username'] = username
 
                 flash('You are now logged in', 'success')
-                return redirect(url_for('loginpage'))
+                return render_template('loginpage.html')
             else:
                 error = 'Invalid login'
                 return render_template('login.html', error=error)
@@ -128,4 +131,6 @@ def login():
 
 
 if __name__=='__main__':
+    app.secret_key = 'super secret key'
+
     app.run(debug=True)
