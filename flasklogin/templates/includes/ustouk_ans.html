@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+ <head>
+	<meta charset="utf-8">
+	<title>us to uk</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	
+	
+ </head>
+  <body>
+  	
+ 	<div class="container form">
+ 		<hr>
+ 		<br>
+ 		<form action="/ustouk_ans" method='POST'>
+ 			<div class="form-group">
+
+ 				{{form.words.label}}
+ 				{{form.words}}
+ 				
+ 			</div>
+
+ 			<div class="form-group">
+
+ 			
+ 				{{form.display(class="btn btn-primary")}}
+ 				
+ 			</div>
+        </form>
+ 		<br>
+
+        
+
+ 	</div>
+
+ 	{% if (us_text) and (gb_text) %}
+ 		<p> Entered word is {{us_text}}</p>
+ 		<p> British English Format : {{gb_text}}</p>
+ 	{% endif %}
+ 		
+ 	
+ 		
+ 	
+
+
+ 		
+    
+	
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
+

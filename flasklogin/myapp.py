@@ -1,11 +1,13 @@
 from flask import Flask,render_template,flash,request,redirect,url_for,session,logging
-from wtforms import Form,StringField,TextAreaField,PasswordField,validators
+from wtforms import Form,StringField,TextAreaField,PasswordField,validators,SubmitField
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+import inflect
 import redis
 
 login_manger=LoginManager()
 bcrypt=Bcrypt()
+p = inflect.engine()
 
 
 
@@ -120,16 +122,31 @@ def login():
 
     return render_template('login.html')
 
+class module(Form):
 
- 
+        words =StringField('Enter the words')
+        display =SubmitField('submit')
+        
+
+@app.route('/module1', methods=['GET', 'POST'])
+def module1():
 
 
 
+    words=None
+    pluralwords=None
 
+    form=module(request.form)
 
+    if request.method == 'POST':
+        words=request.form['words']
+        pluralwords=p.plural(words)
 
+      
+        
+    return render_template('module1.html',form=form,words=words,pluralwords=pluralwords)
 
-
+    
 if __name__=='__main__':
     app.secret_key = 'super secret key'
 
