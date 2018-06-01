@@ -1,0 +1,20 @@
+
+        # for secure filenames. Read the documentation.
+        file = request.files['myfile']
+        filename = secure_filename(file.filename) 
+
+        # os.path.join is used so that paths work in every operating system
+        file.save(os.path.join("home","shyam","internprojects",myfile))
+
+        # You should use os.path.join here too.
+        with open("/home/shyam/internprojects/myfile") as f:
+            file_content = f.readlines()
+            pluralwords=p.plural([file_content])
+
+
+        return render_template('module1_plu.html',file_content=file_content,pluralwords=pluralwords)     
+
+
+    else:
+
+    	return render_template('module1_plu.html')
